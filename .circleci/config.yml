@@ -5,9 +5,9 @@ orbs:
 
 jobs:
   build_image:
-    executor: 
+    executor:
       name: go/default
-      tag: '1.19.2'
+      tag: "1.19.2"
     steps:
       - checkout
       - run:
@@ -22,3 +22,8 @@ jobs:
       - run:
           name: build-app-karsajobs
           command: ./build_push_image_karsajobs.sh
+
+workflows:
+  build_my_app:
+    jobs:
+      - build_image
