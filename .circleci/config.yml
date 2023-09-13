@@ -32,7 +32,7 @@ jobs:
 workflows:
   lint_dockerfile:
     jobs:
-      - lint-dockerfile
+      - lint_dockerfile
   build_my_app:
     jobs:
       - build_image
