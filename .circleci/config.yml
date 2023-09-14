@@ -1,21 +1,16 @@
 version: 2.1
 
-orbs:
+# orbs:
 #   go: circleci/go@1.8.0
-  docker: circleci/docker@2.2.0
+  # docker: circleci/docker@2.2.0
 
 jobs:
-  lint-dockerfile:
-    executor: docker/docker
-    steps:
-      - checkout
-      - docker/hadolint:
-          dockerfiles: Dockerfile
   test-app:
     docker:
       - image: cimg/go:1.21.1
     steps:
       - checkout
+      - run: docker run --rm -i hadolint/hadolint < Dockerfile
       - run: go test -v -short --count=1 $(go list ./...)
       # - lint-dockerfile:
       #     docker/hadolint:
@@ -39,10 +34,8 @@ jobs:
 workflows:
   build:
     jobs:
-      - lint-dockerfile
-      - test-app:
-          requires:
-            - lint-dockerfile
+      # - lint-dockerfile
+      - test-app
   # build_my_app:
   #   jobs:
   #     - build_image
