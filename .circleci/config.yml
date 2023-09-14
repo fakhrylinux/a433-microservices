@@ -1,7 +1,7 @@
 version: 2.1
 
-# orbs:
-  # go: circleci/go@1.8.0
+orbs:
+  go: circleci/go@1.8.0
   # docker: circleci/docker@2.2.0
 
 jobs:
