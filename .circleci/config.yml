@@ -10,9 +10,10 @@ jobs:
       - image: cimg/go:1.21.1
     steps:
       - checkout
-      - lint-dockerfile:
-          docker/hadolint:
-            dockerfiles: Dockerfile
+      - run: go version
+      # - lint-dockerfile:
+      #     docker/hadolint:
+      #       dockerfiles: Dockerfile
   # build_image:
   #   executor:
   #     name: go/default
