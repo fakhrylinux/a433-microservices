@@ -10,7 +10,8 @@ jobs:
       - image: cimg/go:1.21.1
     steps:
       - checkout
-      - run: sudo systemctl start docker.service
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: docker run --rm -i hadolint/hadolint < Dockerfile
       - run: go test -v -short --count=1 $(go list ./...)
       # - lint-dockerfile:
