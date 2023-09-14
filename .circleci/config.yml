@@ -10,6 +10,7 @@ jobs:
       - image: cimg/go:1.21.1
     steps:
       - checkout
+      - run: sudo systemctl start docker.service
       - run: docker run --rm -i hadolint/hadolint < Dockerfile
       - run: go test -v -short --count=1 $(go list ./...)
       # - lint-dockerfile:
