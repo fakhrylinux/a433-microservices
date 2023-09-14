@@ -1,43 +1,25 @@
 version: 2.1
 
-# orbs:
-#   go: circleci/go@1.8.0
-  # docker: circleci/docker@2.2.0
-
 jobs:
-  test-app:
+  build_and_push:
     docker:
       - image: cimg/go:1.21.1
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: docker run --rm -i hadolint/hadolint < Dockerfile
-      - run: go test -v -short --count=1 $(go list ./...)
-      # - lint-dockerfile:
-      #     docker/hadolint:
-      #       dockerfiles: Dockerfile
-  # build_image:
-  #   executor:
-  #     name: go/default
-  #     tag: "1.19.2"
-  #   steps:
-      
-  #     - go/load-cache
-  #     - go/mod-download
-  #     - go/save-cache
-  #     - run:
-  #         name: test-app
-  #         command: go test -v -short --count=1 $(go list ./...)
-  #     - run:
-  #         name: build-app-karsajobs
-  #         command: ./build_push_image_karsajobs.sh
+      - run:
+          name: lint-dockerfile
+          command: docker run --rm -i hadolint/hadolint < Dockerfile
+      - run: 
+          name: test-app
+          command: go test -v -short --count=1 $(go list ./...)
+      - run:
+          name: build-app-karsajobs
+          command: ./build_push_image_karsajobs.sh
 
 workflows:
   build:
     jobs:
-      # - lint-dockerfile
-      - test-app
-  # build_my_app:
-  #   jobs:
-  #     - build_image
+      - build_and_push:
+          context: github_packages
