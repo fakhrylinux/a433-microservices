@@ -42,7 +42,7 @@ workflows:
   build:
     jobs:
       - lint-dockerfile
-      - build_and_test:
+      - test-app:
           requires:
             - lint-dockerfile
   # build_my_app:
