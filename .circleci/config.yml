@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build_and_push:
+    docker:
+      - image: cimg/base
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: lint-dockerfile
+          command: docker run --rm -i hadolint/hadolint < Dockerfile
+      - run:
+          name: build-app-karsajobs-ui
+          command: ./build_push_image_karsajobs_ui.sh
+
+workflows:
+  build:
+    jobs:
+      - build_and_push:
+          context: github_packages
