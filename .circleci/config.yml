@@ -6,8 +6,7 @@ orbs:
 
 jobs:
   lint-dockerfile:
-    docker:
-      - image: cimg/go:1.21.1
+    executor: docker/docker
     steps:
       - checkout
       - docker/hadolint:
