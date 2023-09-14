@@ -1,18 +1,24 @@
 version: 2.1
 
-# orbs:
+orbs:
 #   go: circleci/go@1.8.0
-#   docker: circleci/docker@2.2.0
+  docker: circleci/docker@2.2.0
 
 jobs:
-  build_and_test:
+  lint-dockerfile:
+    machine:
+      image: ubuntu-2204:2023.07.2
+      docker_layer_caching: true
+    steps:
+      - checkout
+      - docker/hadolint:
+          dockerfiles: Dockerfile
+  test-app:
     docker:
       - image: cimg/go:1.21.1
     steps:
       - checkout
-      - run:
-          name: test-app
-          command: go test -v -short --count=1 $(go list ./...)
+      - run: go test -v -short --count=1 $(go list ./...)
       # - lint-dockerfile:
       #     docker/hadolint:
       #       dockerfiles: Dockerfile
@@ -35,7 +41,10 @@ jobs:
 workflows:
   build:
     jobs:
-      - build_and_test
+      - lint-dockerfile
+      - build_and_test:
+          requires:
+            - lint-dockerfile
   # build_my_app:
   #   jobs:
   #     - build_image
